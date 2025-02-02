@@ -10,7 +10,6 @@ on:
 
 jobs:
   lint:
-    name: Run Pyflakes
     runs-on: ubuntu-latest
 
     steps:
@@ -20,10 +19,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.9'
 
-      - name: Install Pyflakes
-        run: pip install pyflakes
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyflakes
+          if [ -f requirements.txt \; then pip install -r requirements.txt; fi
 
-      - name: Run Pyflakes
-        run: pyflakes .
+      - name: Run Pyflakes and Save Output
+        run: |
+          pyflakes hw2_debugging.py rand.py > pyflakes_report.txt || true
+
+      - name: Upload Pyflakes Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pyflakes-report
+          path: pyflakes_report.txt

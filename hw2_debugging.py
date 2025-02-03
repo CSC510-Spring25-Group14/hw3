@@ -74,3 +74,13 @@ arr_for_insertion_sort = rand.random_array([None] * 20)
 arr_for_insertion_sort_out = insertion_sort(arr_for_insertion_sort)
 
 print(arr_for_insertion_sort_out)
+
+def test_merge_sort_mpartha():
+    arr_1 = [4, 2, 1, 9, 20, 2]
+    assert merge_sort(arr_1) == [1, 2, 2, 4, 9, 20]
+
+    arr_2 = [-2, -9, 9, 10, 1, 0, 0, 0]
+    assert merge_sort(arr_2) == [-9, -2, 0, 0, 0, 1, 9, 10]
+
+    arr_3 = [100, 82, 74, 62, 29, 10, 9, 4, 2, 1]
+    assert merge_sort(arr_3) == [1, 2, 4, 9, 10, 29, 62, 74, 82, 100]

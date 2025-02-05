@@ -56,3 +56,18 @@ sorted_bubble = bubble_sort(TEST_ARRAY)
 # Print results
 print(f"Merge sort result: {sorted_merge}")
 print(f"Bubble sort result: {sorted_bubble}")
+
+import pytest
+from optimized_sorting import merge_sort
+
+def test_merge_sort_sorted():
+    """Test merge sort with an already sorted list."""
+    assert merge_sort([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5]
+
+def test_merge_sort_reverse():
+    """Test merge sort with a reverse sorted list."""
+    assert merge_sort([5, 4, 3, 2, 1]) == [1, 2, 3, 4, 5]
+
+def test_merge_sort_unsorted():
+    """Test merge sort with an unsorted list."""
+    assert merge_sort([3, 1, 4, 1, 5, 9, 2]) == [1, 1, 2, 3, 4, 5, 9]

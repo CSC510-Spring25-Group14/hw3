@@ -1,16 +1,13 @@
 """
-    This code helps to generate an array of integers
+    This module generates 20 random elements in an array
 """
 import random
 
 def random_array(arr):
     """
-        Input:
-        arr (list)
-
-        Returns:
-            array of size len(arr) filled with random integers in the range [1, 20] (both inclusive)
+        This function generates the random array using python built-in module random
     """
+    shuffled_num = None
     for i in enumerate(arr):
         shuffled_num = random.randint(1, 20)
         arr[i[0]] = shuffled_num

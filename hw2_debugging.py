@@ -1,34 +1,25 @@
 """
-  This code contains implementation of few standard sorting algorithms
+This module implements quick sort and merge sort and insertion sort
 """
 import rand
 
-def merge_sort(input_arr):
+def merge_sort(arr):
     """
-        Input:
-        arr (array of elements)
-
-        Returns:
-        arr in sorted order (sorted using merge sort algorithm)
+        This function implements merge sort of the two arrays
     """
-    if len(input_arr) == 1:
-        return input_arr
+    if len(arr) == 1:
+        return arr
 
-    half = len(input_arr)//2
+    half = len(arr)//2
 
-    return recombine(merge_sort(input_arr[:half]), merge_sort(input_arr[half:]))
+    return recombine(merge_sort(arr[:half]), merge_sort(arr[half:]))
 
 def recombine(left_arr, right_arr):
     """
-        Input:
-        Two sorted arrays - left_arr, right_arr
-
-        Returns:
-        a single sorted array combining the elements of left_arr and right_arr
+        This function combines two arrays element-wise (ascending order)
     """
     left_index = 0
     right_index = 0
-
     merge_arr = [None] * (len(left_arr) + len(right_arr))
     while left_index < len(left_arr) and right_index < len(right_arr):
         if left_arr[left_index] < right_arr[right_index]:
@@ -65,22 +56,49 @@ def insertion_sort(input_arr):
             j = j - 1
     return input_arr
 
+def quick_sort(arr, low, high):
+    """
+        This function merges two partitioned arrays
+    """
+    if low < high:
+        pivot = partition(arr, low, high)
+        quick_sort(arr, low, pivot - 1)
+        quick_sort(arr, pivot + 1, high)
+
+def partition(arr, low, high):
+    """
+        This function partitions an array based on a pivot element
+    """
+    pivot = arr[high]
+    i = low - 1
+
+    for j in range(low, high):
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
 arr = rand.random_array([None] * 20)
 arr_out = merge_sort(arr)
 
 print(arr_out)
 
-arr_for_insertion_sort = rand.random_array([None] * 20)
-arr_for_insertion_sort_out = insertion_sort(arr_for_insertion_sort)
+quick_sort_arr = rand.random_array([None] * 20)
+quick_sort(quick_sort_arr, 0, len(quick_sort_arr) - 1)
+print("Sorted array using quick sort is:")
+print(quick_sort_arr)
 
-print(arr_for_insertion_sort_out)
+def merge_sort_test_cases():
+    """
+        Test cases for merge sort function
+    """
+    arr_1 = [4, 5, 1, 6, 2, 8, 3]
+    assert merge_sort(arr_1) == [1, 2, 3, 4, 5, 6, 8]
 
-def test_merge_sort_mpartha():
-    arr_1 = [4, 2, 1, 9, 20, 2]
-    assert merge_sort(arr_1) == [1, 2, 2, 4, 9, 20]
+    arr_2 = [100, -50, 0, -2, 3, 87]
+    assert merge_sort(arr_2) == [-50, -2, 0, 3, 87, 100]
 
-    arr_2 = [-2, -9, 9, 10, 1, 0, 0, 0]
-    assert merge_sort(arr_2) == [-9, -2, 0, 0, 0, 1, 9, 10]
-
-    arr_3 = [100, 82, 74, 62, 29, 10, 9, 4, 2, 1]
-    assert merge_sort(arr_3) == [1, 2, 4, 9, 10, 29, 62, 74, 82, 100]
+    arr_3 = [9, 8, 5, -5, 0, -1]
+    assert merge_sort(arr_3) == [-5, -1, 0, 5, 8, 9]

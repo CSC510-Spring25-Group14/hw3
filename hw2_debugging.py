@@ -1,42 +1,58 @@
-import rand
+"""
+Module for sorting algorithms with debugging improvements.
+"""
 
-def mergeSort(arr):
-    if (len(arr) == 1):
-        return arr
+import rand  # Ensure rand.py has the function random_array()
 
-    half = len(arr)//2
-    return recombine(mergeSort(arr[:half]), mergeSort(arr[half:]))
+def merge_sort(input_arr):
+    """Sorts an array using the merge sort algorithm."""
+    if len(input_arr) <= 1:
+        return input_arr
 
-def recombine(leftArr, rightArr):
-    leftIndex = 0
-    rightIndex = 0
-    mergeArr = [None] * (len(leftArr) + len(rightArr))
-    while leftIndex < len(leftArr) and rightIndex < len(rightArr):
-        if leftArr[leftIndex] < rightArr[rightIndex]:
-            rightIndex += 1
-            mergeArr[leftIndex + rightIndex] = leftArr[leftIndex]
+    half = len(input_arr) // 2
+    return merge(
+        merge_sort(input_arr[:half]),
+        merge_sort(input_arr[half:])
+    )
+
+def merge(left_arr, right_arr):
+    """Merges two sorted arrays into one sorted array."""
+    merged = []
+    left_idx, right_idx = 0, 0
+
+    while left_idx < len(left_arr) and right_idx < len(right_arr):
+        if left_arr[left_idx] <= right_arr[right_idx]:
+            merged.append(left_arr[left_idx])
+            left_idx += 1
         else:
-            leftIndex += 1
-            mergeArr[leftIndex + rightIndex] = rightArr[rightIndex]
+            merged.append(right_arr[right_idx])
+            right_idx += 1
 
-    for i in range(rightIndex, len(rightArr)):
-        mergeArr[leftIndex + rightIndex] = rightArr[i]
-    
-    for i in range(leftIndex, len(leftArr)):
-        mergeArr[leftIndex + rightIndex] = leftArr[i]
+    merged.extend(left_arr[left_idx:])
+    merged.extend(right_arr[right_idx:])
+    return merged
 
-    return mergeArr
-
-def bubbleSort(arr):
-    arr_copy = arr.copy()  
+def bubble_sort(input_array):
+    """Sorts an array using the bubble sort algorithm."""
+    arr_copy = input_array.copy()
+    n = len(arr_copy)
     for i in range(n):
-        for j in range(n):  # Should be range(n - 1)
+        swapped = False
+        for j, _ in enumerate(arr_copy[:-1 - i]):  # Using enumerate for cleaner iteration
             if arr_copy[j] > arr_copy[j + 1]:
                 arr_copy[j], arr_copy[j + 1] = arr_copy[j + 1], arr_copy[j]
+                swapped = True
+        if not swapped:
+            break
     return arr_copy
 
-arr = rand.random_array([None] * 20)
-arr_out = mergeSort(arr)
-bubble_out = bubbleSort(arr)  # This line will trigger an IndexError.
+# Generate a test array
+TEST_ARRAY = rand.random_array(20)
 
-print(arr_out)
+# Sort using merge sort and bubble sort
+sorted_merge = merge_sort(TEST_ARRAY)
+sorted_bubble = bubble_sort(TEST_ARRAY)
+
+# Print results
+print(f"Merge sort result: {sorted_merge}")
+print(f"Bubble sort result: {sorted_bubble}")

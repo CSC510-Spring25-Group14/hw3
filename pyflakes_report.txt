@@ -1,0 +1,2 @@
+hw2_debugging.py:32:20: undefined name 'n'
+hw2_debugging.py:33:24: undefined name 'n'

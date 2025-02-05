@@ -1,0 +1,6 @@
+hw2_debugging.py
+    F 10:0 recombine - B
+    F 30:0 bubbleSort - A
+    F 3:0 mergeSort - A
+rand.py
+    F 3:0 random_array - A

@@ -1,8 +1,5 @@
 """
 Module for sorting algorithms with debugging improvements.
-"""
-
-"""
 This module implements quick sort and merge sort and insertion sort
 """
 import rand  # Ensure rand.py has the function random_array()
@@ -50,7 +47,7 @@ def bubble_sort(input_array):
     return arr_copy
 
 # Generate a test array
-TEST_ARRAY = rand.random_array(20)
+TEST_ARRAY = rand.random_array([None] * 20)
 
 # Sort using merge sort and bubble sort
 sorted_merge = merge_sort(TEST_ARRAY)
@@ -59,9 +56,6 @@ sorted_bubble = bubble_sort(TEST_ARRAY)
 # Print results
 print(f"Merge sort result: {sorted_merge}")
 print(f"Bubble sort result: {sorted_bubble}")
-
-import pytest
-from optimized_sorting import merge_sort
 
 def test_merge_sort_sorted():
     """Test merge sort with an already sorted list."""

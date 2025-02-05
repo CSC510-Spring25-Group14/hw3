@@ -5,7 +5,6 @@ def mergeSort(arr):
         return arr
 
     half = len(arr)//2
-
     return recombine(mergeSort(arr[:half]), mergeSort(arr[half:]))
 
 def recombine(leftArr, rightArr):
@@ -28,9 +27,16 @@ def recombine(leftArr, rightArr):
 
     return mergeArr
 
+def bubbleSort(arr):
+    arr_copy = arr.copy()  
+    for i in range(n):
+        for j in range(n):  # Should be range(n - 1)
+            if arr_copy[j] > arr_copy[j + 1]:
+                arr_copy[j], arr_copy[j + 1] = arr_copy[j + 1], arr_copy[j]
+    return arr_copy
+
 arr = rand.random_array([None] * 20)
 arr_out = mergeSort(arr)
+bubble_out = bubbleSort(arr)  # This line will trigger an IndexError
 
 print(arr_out)
-
-

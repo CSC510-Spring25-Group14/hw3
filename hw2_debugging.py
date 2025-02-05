@@ -37,6 +37,6 @@ def bubbleSort(arr):
 
 arr = rand.random_array([None] * 20)
 arr_out = mergeSort(arr)
-bubble_out = bubbleSort(arr)  # This line will trigger an IndexError .
+bubble_out = bubbleSort(arr)  # This line will trigger an IndexError.
 
 print(arr_out)

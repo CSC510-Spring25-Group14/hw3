@@ -1,104 +1,76 @@
 """
+Module for sorting algorithms with debugging improvements.
+"""
+
+"""
 This module implements quick sort and merge sort and insertion sort
 """
-import rand
+import rand  # Ensure rand.py has the function random_array()
 
-def merge_sort(arr):
-    """
-        This function implements merge sort of the two arrays
-    """
-    if len(arr) == 1:
-        return arr
+def merge_sort(input_arr):
+    """Sorts an array using the merge sort algorithm."""
+    if len(input_arr) <= 1:
+        return input_arr
 
-    half = len(arr)//2
+    half = len(input_arr) // 2
+    return merge(
+        merge_sort(input_arr[:half]),
+        merge_sort(input_arr[half:])
+    )
 
-    return recombine(merge_sort(arr[:half]), merge_sort(arr[half:]))
+def merge(left_arr, right_arr):
+    """Merges two sorted arrays into one sorted array."""
+    merged = []
+    left_idx, right_idx = 0, 0
 
-def recombine(left_arr, right_arr):
-    """
-        This function combines two arrays element-wise (ascending order)
-    """
-    left_index = 0
-    right_index = 0
-    merge_arr = [None] * (len(left_arr) + len(right_arr))
-    while left_index < len(left_arr) and right_index < len(right_arr):
-        if left_arr[left_index] < right_arr[right_index]:
-            merge_arr[left_index + right_index] = left_arr[left_index]
-            left_index += 1
+    while left_idx < len(left_arr) and right_idx < len(right_arr):
+        if left_arr[left_idx] <= right_arr[right_idx]:
+            merged.append(left_arr[left_idx])
+            left_idx += 1
         else:
-            merge_arr[left_index + right_index] = right_arr[right_index]
-            right_index += 1
+            merged.append(right_arr[right_idx])
+            right_idx += 1
 
-    for i in range(right_index, len(right_arr)):
-        merge_arr[left_index + i] = right_arr[i]
-    for i in range(left_index, len(left_arr)):
-        merge_arr[i + right_index] = left_arr[i]
+    merged.extend(left_arr[left_idx:])
+    merged.extend(right_arr[right_idx:])
+    return merged
 
-    return merge_arr
+def bubble_sort(input_array):
+    """Sorts an array using the bubble sort algorithm."""
+    arr_copy = input_array.copy()
+    n = len(arr_copy)
+    for i in range(n):
+        swapped = False
+        for j, _ in enumerate(arr_copy[:-1 - i]):  # Using enumerate for cleaner iteration
+            if arr_copy[j] > arr_copy[j + 1]:
+                arr_copy[j], arr_copy[j + 1] = arr_copy[j + 1], arr_copy[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr_copy
 
-# Insertion Sort algorithm
-# Added by mpartha
+# Generate a test array
+TEST_ARRAY = rand.random_array(20)
 
-def insertion_sort(input_arr):
-    """
-        Input:
-        arr (array of elements)
+# Sort using merge sort and bubble sort
+sorted_merge = merge_sort(TEST_ARRAY)
+sorted_bubble = bubble_sort(TEST_ARRAY)
 
-        Returns:
-        arr in sorted order 
-    """
-    for i in range(len(input_arr)):
-        j = i
-        while j > 0 and input_arr[j - 1] > input_arr[j]:
-            temp = input_arr[j - 1]
-            input_arr[j - 1] = input_arr[j]
-            input_arr[j] = temp
-            j = j - 1
-    return input_arr
+# Print results
+print(f"Merge sort result: {sorted_merge}")
+print(f"Bubble sort result: {sorted_bubble}")
 
-def quick_sort(arr, low, high):
-    """
-        This function merges two partitioned arrays
-    """
-    if low < high:
-        pivot = partition(arr, low, high)
-        quick_sort(arr, low, pivot - 1)
-        quick_sort(arr, pivot + 1, high)
+import pytest
+from optimized_sorting import merge_sort
 
-def partition(arr, low, high):
-    """
-        This function partitions an array based on a pivot element
-    """
-    pivot = arr[high]
-    i = low - 1
+def test_merge_sort_sorted():
+    """Test merge sort with an already sorted list."""
+    assert merge_sort([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5]
 
-    for j in range(low, high):
-        if arr[j] < pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
+def test_merge_sort_reverse():
+    """Test merge sort with a reverse sorted list."""
+    assert merge_sort([5, 4, 3, 2, 1]) == [1, 2, 3, 4, 5]
 
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return i + 1
-
-arr = rand.random_array([None] * 20)
-arr_out = merge_sort(arr)
-
-print(arr_out)
-
-quick_sort_arr = rand.random_array([None] * 20)
-quick_sort(quick_sort_arr, 0, len(quick_sort_arr) - 1)
-print("Sorted array using quick sort is:")
-print(quick_sort_arr)
-
-def merge_sort_test_cases():
-    """
-        Test cases for merge sort function
-    """
-    arr_1 = [4, 5, 1, 6, 2, 8, 3]
-    assert merge_sort(arr_1) == [1, 2, 3, 4, 5, 6, 8]
-
-    arr_2 = [100, -50, 0, -2, 3, 87]
-    assert merge_sort(arr_2) == [-50, -2, 0, 3, 87, 100]
-
-    arr_3 = [9, 8, 5, -5, 0, -1]
-    assert merge_sort(arr_3) == [-5, -1, 0, 5, 8, 9]
+def test_merge_sort_unsorted():
+    """Test merge sort with an unsorted list."""
+    assert merge_sort([3, 1, 4, 1, 5, 9, 2]) == [1, 1, 2, 3, 4, 5, 9]

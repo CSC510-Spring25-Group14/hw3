@@ -71,3 +71,16 @@ quick_sort_arr = rand.random_array([None] * 20)
 quick_sort(quick_sort_arr, 0, len(quick_sort_arr) - 1)
 print("Sorted array using quick sort is:")
 print(quick_sort_arr)
+
+def merge_sort_test_cases():
+    """
+        Test cases for merge sort function
+    """
+    arr_1 = [4, 5, 1, 6, 2, 8, 3]
+    assert merge_sort(arr_1) == [1, 2, 3, 4, 5, 6, 8]
+
+    arr_2 = [100, -50, 0, -2, 3, 87]
+    assert merge_sort(arr_2) == [-50, -2, 0, 3, 87, 100]
+
+    arr_3 = [9, 8, 5, -5, 0, -1]
+    assert merge_sort(arr_3) == [-5, -1, 0, 5, 8, 9]

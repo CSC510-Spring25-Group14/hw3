@@ -1,4 +1,4 @@
-name: Lint with Pyflakes
+name: Pyflakes
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  lint:
+  pyflakes:
     runs-on: ubuntu-latest
 
     steps:
